@@ -1,0 +1,49 @@
+<odoo>
+    <record id="project_inherited_view" model="ir.ui.view" >
+        <field name="name" >Projects</field>
+        <field name="model" >project.project</field>
+        <field name="inherit_id" ref="project.project_project_view_form_simplified" />
+        <field name="arch" type="xml" >
+            <xpath expr="//div[hasclass('oe_title')]" position="before" >
+                <h1>
+                    <field name="project_sequence"/>
+                </h1>
+            </xpath>
+            <xpath expr="//div[@name='alias_def']" position="after" >
+                 <group>
+                    <field name="project_type"/>
+                    <field name="x_currency_id"/>
+                    <field name="budget"/>
+                    <field name="analytic_account_id"/>
+                    <field name="business_unit_id"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="edit_project_inherited_view" model="ir.ui.view" >
+        <field name="name" >Projects</field>
+        <field name="model" >project.project</field>
+        <field name="inherit_id" ref="project.edit_project" />
+        <field name="arch" type="xml" >
+            <xpath expr="//page[@name='settings']" position="after" >
+                <page name="sites" string="Sites" >
+                    <field name="x_site_ids" widget="one2many" />
+                </page>
+            </xpath>
+            <xpath expr="//div[hasclass('oe_title')]" position="before" >
+                <button type="object" name="avail_sites" class="oe_stat_button" >Our Sites</button>
+                <h1>
+                    <field name="project_sequence"/>
+                </h1>
+            </xpath>
+            <xpath expr="//field[@name='tag_ids']" position="after" >
+                <field name="project_type"/>
+                <field name="x_currency_id"/>
+                <field name="budget"/>
+                <field name="analytic_account_id"/>
+                <field name="business_unit_id"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

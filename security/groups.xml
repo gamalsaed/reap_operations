@@ -1,0 +1,8 @@
+<odoo>
+    <record id="group_reap_manager"  model="res.groups" >
+        <field name="name" >Operations Manager</field>
+    </record>
+    <record id="group_reap_users"  model="res.groups" >
+        <field name="name" >Operations Users</field>
+    </record>
+</odoo>

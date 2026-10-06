@@ -1,0 +1,8 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_reap_manager,reap_manager,model_enterprise_project_site,group_reap_manager,1,1,1,1
+access_req_manager,req_manager,model_enterprise_request,group_reap_manager,1,1,1,1
+access_req_line_manager,req_line_manager,model_enterprise_request_line,group_reap_manager,1,1,1,1
+access_req_line_users,req_line_users,model_enterprise_request_line,group_reap_users,1,1,1,1
+access_req_users,req_users,model_enterprise_request,group_reap_users,1,1,1,1
+access_rejection_reason_wizard,rejection_reason_manager,model_rejection_reason,group_reap_manager,1,1,1,1
+access_product_mapping_wizard,product_mapping_wizard_manager,model_enterprise_product_mapping_wizard,group_reap_manager,1,1,1,1

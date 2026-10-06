@@ -1,0 +1,64 @@
+<odoo>
+
+    <record id="enterprice_site_form" model="ir.ui.view" >
+        <field name="name" >Site Form</field>
+        <field name="model" >enterprise.project.site</field>
+        <field name="arch" type="xml" >
+            <form>
+                    <field name="state" widget="statusbar" />
+                <sheet>
+                    <h1>
+                        <field name="site_sequence" />
+                    </h1>
+                    <group>
+                        <span>Name</span>
+                        <h2>
+                            <field name="name" string="Name" />
+                        </h2>
+                    </group>
+                    <group>
+                        <field name="project_id" string="Project" />
+                        <field name="partner_id" string="Partner" />
+                        <field name="manager_id" string="Manager" />
+                        <field name="date_start" string="Start Date" />
+                        <field name="date_end" string="Deadline" />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="enterprise_site_list" model="ir.ui.view" >
+        <field name="name" >Site List View</field>
+        <field name="model" >enterprise.project.site</field>
+        <field name="arch" type="xml" >
+            <list>
+                <field name="site_sequence" />
+                <field name="name" string="Name" />
+                <field name="project_id" string="Project" />
+                <field name="partner_id" string="Partner" />
+                <field name="manager_id" string="Manager" />
+            </list>
+        </field>
+    </record>
+
+    <record id="enterprise_site_search" model="ir.ui.view" >
+        <field name="name" >model.view.search</field>
+        <field name="model" >enterprise.project.site</field>
+        <field name="arch" type="xml" >
+            <search>
+                <field name="site_sequence" />
+                <field name="name" string="Name" />
+                <field name="project_id" string="Project" />
+                <field name="partner_id" string="Partner" />
+                <field name="manager_id" string="Manager" />
+            </search>
+        </field>
+    </record>
+
+    <record id="enterprise_site_action" model="ir.actions.act_window" >
+        <field name="name" >Sites</field>
+        <field name="res_model" >enterprise.project.site</field>
+        <field name="view_mode" >list,form</field>
+    </record>
+</odoo>
