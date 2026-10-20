@@ -21,7 +21,7 @@
                         </group>
                     </group>
                     <div class="d-flex justify-content-end" >
-                        <button string="Map Product" class="btn-primary" type="object" name="map_product_action" />
+                        <button string="Map Product" invisible="product_status == 'known'" class="btn-primary" type="object" name="map_product_action" />
                     </div>
                 </sheet>
             </form>

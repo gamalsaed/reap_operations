@@ -3,5 +3,6 @@
         <menuitem id="site" name="Site" action="enterprise_site_action" />
         <menuitem id="copy_project" name="Projects" action="project.open_view_project_all" />
         <menuitem id="request_hub" name="Request Hub" action="enterprise_request_action" />
+        <menuitem id="purchase_request" name="Purchase Request" action="enterprise_purchase_request_action" />
     </menuitem>
 </odoo>

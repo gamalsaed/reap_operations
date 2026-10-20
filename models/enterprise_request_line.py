@@ -7,7 +7,8 @@ class EnterpriseRequestLine(models.Model):
     _name = "enterprise.request.line"
     _description = "Enterprise Request Line"
 
-    request_id = fields.Many2one("enterprise.request", string="Request", required=True, ondelete="cascade")
+    request_id = fields.Many2one(
+        "enterprise.request", string="Request", required=True, ondelete="cascade")
     product_id = fields.Many2one("product.product", string="Product")
     requested_description = fields.Char(string="Description")
     currency_id = fields.Many2one(
@@ -22,8 +23,16 @@ class EnterpriseRequestLine(models.Model):
     ], default="known", required=True)
     product_uom_id = fields.Many2one("uom.uom", string="UOM", required=True)
     quantity = fields.Float(string="Quantity", required=True)
-    estimated_unit_price = fields.Monetary(string="Estimated Unit Price", required=True, currency_field="currency_id")
-    subtotal = fields.Monetary(string="Subtotal", required=True, compute="_compute_subtotal", currency_field="currency_id")
+    estimated_unit_price = fields.Monetary(
+        string="Estimated Unit Price", required=True, currency_field="currency_id")
+    subtotal = fields.Monetary(string="Subtotal", required=True,
+                               compute="_compute_subtotal", currency_field="currency_id")
+
+    @api.constrains("product_status")
+    def _check_status(self):
+        for rec in self:
+            if rec.product_id and rec.product_status == "unknown":
+                raise ValidationError("The product is already exist.")
 
     @api.constrains("quantity")
     def _check_quantity(self):
@@ -35,40 +44,53 @@ class EnterpriseRequestLine(models.Model):
     def _check_estimated_unit_price(self):
         for line in self:
             if line.estimated_unit_price < 0:
-                raise ValidationError("Estimated Unit Price must be greater than 0")
+                raise ValidationError(
+                    "Estimated Unit Price must be greater than 0")
 
+    @api.depends("quantity", "estimated_unit_price")
     def _compute_subtotal(self):
         for line in self:
             line.subtotal = line.quantity * line.estimated_unit_price
 
-    @api.constrains("product_id")
-    def _check_product_id(self):
-        if self.product_status == "known" and not self.product_id:
-            raise ValidationError("Product is required")
+    @api.constrains("product_status", "product_id", "requested_description")
+    def _check_product(self):
+        for line in self:
+            if line.product_status == "known" and not line.product_id:
+                raise ValidationError("Product is required")
+            if line.product_status == "unknown" and not line.requested_description:
+                raise ValidationError(
+                    "You must provide a description for the product")
+            elif line.product_id and line.product_status == "unknown":
+                raise ValidationError("The product is already exist.")
 
     @api.constrains("requested_description")
     def _check_product_description(self):
         if self.product_status == "unknown" and not self.requested_description:
-            raise ValidationError("You must provide a description for the product")
+            raise ValidationError(
+                "You must provide a description for the product")
 
     def write(self, vals):
         if self.request_id.state == "approved" and self.env.user.has_group("reap_operations.group_reap_users"):
-            raise UserError("You can't edit this line because Your request is already approved")
+            raise UserError(
+                "You can't edit this line because Your request is already approved")
         return super().write(vals)
 
     @api.model_create_multi
     def create(self, vals):
         for val in vals:
             if val.get("request_id"):
-                request = self.env["enterprise.request"].browse(val.get("request_id"))
+                request = self.env["enterprise.request"].browse(
+                    val.get("request_id"))
                 if request.state == "approved" and self.env.user.has_group("reap_operations.group_reap_users"):
-                    raise UserError("You can't create a new line because your request is already approved")
+                    raise UserError(
+                        "You can't create a new line because your request is already approved")
         return super().create(vals)
 
     def unlink(self):
         for record in self:
             if record.request_id.state == "approved" and self.env.user.has_group("reap_operations.group_reap_users"):
-                raise UserError("You can't remove this line because your request is already approved")
+                raise UserError(
+                    "You can't remove this line because your request is already approved")
         return super().unlink()
 
     def map_product_action(self):
